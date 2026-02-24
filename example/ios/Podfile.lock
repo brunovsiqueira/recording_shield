@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - recording_shield (0.1.0):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - recording_shield (from `.symlinks/plugins/recording_shield/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  recording_shield:
+    :path: ".symlinks/plugins/recording_shield/ios"
+
+SPEC CHECKSUMS:
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  recording_shield: 780a1808f4607d960267e7694e8e4a358bdabe7e
+
+PODFILE CHECKSUM: 20e260c9bb3f61194c661a4ba028da86e4f3ed96
+
+COCOAPODS: 1.16.2

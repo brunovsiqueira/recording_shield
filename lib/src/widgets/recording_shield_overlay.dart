@@ -68,22 +68,26 @@ class _RecordingShieldOverlayState extends State<RecordingShieldOverlay> {
     final isRecording = controller.isRecording;
     final autoShowOverlay = config?.autoShowOverlay ?? true;
 
-    return Stack(
-      key: _appKey,
-      children: [
-        // Main app content
-        widget.child,
+    // Directionality is required for Stack since this widget wraps MaterialApp
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        key: _appKey,
+        children: [
+          // Main app content
+          widget.child,
 
-        // Overlay when recording is detected
-        if (isRecording && autoShowOverlay)
-          Positioned.fill(
-            child: IgnorePointer(
-              child: widget.overlayBuilder != null
-                  ? widget.overlayBuilder!(context, controller.recordingState.value)
-                  : const _DefaultOverlay(),
+          // Overlay when recording is detected
+          if (isRecording && autoShowOverlay)
+            Positioned.fill(
+              child: IgnorePointer(
+                child: widget.overlayBuilder != null
+                    ? widget.overlayBuilder!(context, controller.recordingState.value)
+                    : const _DefaultOverlay(),
+              ),
             ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 }
