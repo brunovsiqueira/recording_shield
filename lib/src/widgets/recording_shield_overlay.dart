@@ -80,19 +80,23 @@ class _RecordingShieldOverlayState extends State<RecordingShieldOverlay> {
             child: IgnorePointer(
               child: widget.overlayBuilder != null
                   ? widget.overlayBuilder!(context, controller.recordingState.value)
-                  : _buildDefaultOverlay(context),
+                  : const _DefaultOverlay(),
             ),
           ),
       ],
     );
   }
+}
 
-  Widget _buildDefaultOverlay(BuildContext context) {
+/// Default overlay widget that renders masks over registered sensitive widgets.
+class _DefaultOverlay extends StatelessWidget {
+  const _DefaultOverlay();
+
+  @override
+  Widget build(BuildContext context) {
     final controller = RecordingShieldController.instance;
     final maskRects = controller.getMaskWidgetRects();
     final config = controller.config;
-    final defaultStyle =
-        config?.defaultMaskStyle ?? RecordingShieldMaskStyle.stripes;
     final maskColor = config?.maskColor ?? const Color(0xDD000000);
     final blurSigma = config?.blurSigma ?? 10.0;
 
@@ -107,26 +111,32 @@ class _RecordingShieldOverlayState extends State<RecordingShieldOverlay> {
           top: maskRect.rect.top,
           width: maskRect.rect.width,
           height: maskRect.rect.height,
-          child: _buildMask(
-            maskRect.style,
-            defaultStyle,
-            maskColor,
-            blurSigma,
+          child: _MaskWidget(
+            style: maskRect.style,
+            maskColor: maskColor,
+            blurSigma: blurSigma,
           ),
         );
       }).toList(),
     );
   }
+}
 
-  Widget _buildMask(
-    RecordingShieldMaskStyle style,
-    RecordingShieldMaskStyle defaultStyle,
-    Color maskColor,
-    double blurSigma,
-  ) {
-    final effectiveStyle = style;
+/// Widget that renders the appropriate mask based on the style.
+class _MaskWidget extends StatelessWidget {
+  final RecordingShieldMaskStyle style;
+  final Color maskColor;
+  final double blurSigma;
 
-    switch (effectiveStyle) {
+  const _MaskWidget({
+    required this.style,
+    required this.maskColor,
+    required this.blurSigma,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    switch (style) {
       case RecordingShieldMaskStyle.blur:
         return BlurMask(sigma: blurSigma);
       case RecordingShieldMaskStyle.solid:
