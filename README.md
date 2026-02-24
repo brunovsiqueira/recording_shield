@@ -96,9 +96,9 @@ RecordingShieldConfig(
   defaultMaskStyle: RecordingShieldMaskStyle.stripes,
   maskColor: Colors.black87,
   blurSigma: 10.0,
-  detectScreenshots: true,            // Emit screenshot events
-  checkOnLaunch: true,                // Check state immediately
-  debug: false,
+  detectScreenshots: false,           // Set to true to detect screenshots
+  checkOnLaunch: true,                // Check state on app launch
+  disableLogging: false,              // Set to true to suppress debug logs
 )
 ```
 
@@ -107,6 +107,15 @@ RecordingShieldConfig(
 - `RecordingShieldMaskStyle.stripes` - Diagonal stripe pattern
 - `RecordingShieldMaskStyle.blur` - Gaussian blur effect
 - `RecordingShieldMaskStyle.solid` - Solid color overlay
+
+## Running the Example
+
+```bash
+cd example
+flutter run
+```
+
+Or open the project root in VS Code and use the "Example App" launch configuration.
 
 ## Important Notes
 
