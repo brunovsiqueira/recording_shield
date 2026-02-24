@@ -1,0 +1,29 @@
+name: recording_shield
+description: A Flutter plugin that detects screen recording in real-time and dynamically overlays visual masks on sensitive widgets.
+version: 0.1.0
+homepage: https://github.com/brunovsiqueira/recording_shield
+repository: https://github.com/brunovsiqueira/recording_shield
+issue_tracker: https://github.com/brunovsiqueira/recording_shield/issues
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+  flutter: '>=3.22.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+
+dev_dependencies:
+  flutter_lints: ^5.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.brunovsiqueira.recording_shield
+        pluginClass: RecordingShieldPlugin
+      ios:
+        pluginClass: RecordingShieldPlugin
