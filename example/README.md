@@ -30,14 +30,19 @@ flutter run -t lib/advanced_example.dart
 
 ## Testing Recording Detection
 
-### iOS
-1. Run the app on an iOS device or simulator
-2. Open Control Center and start screen recording
-3. Observe the mask appearing over sensitive widgets
+> **Important:** Recording detection requires a **physical device**. Simulators and emulators do NOT work.
 
-### Android (API 35+)
-1. Run the app on an Android device with API 35+
+### iOS (Physical Device Required)
+1. Run the app on a **real iPhone/iPad**
+2. Open **Control Center** (swipe down from top-right)
+3. Tap the **Screen Recording** button
+4. Observe the mask appearing over sensitive widgets
+
+The iOS Simulator's record button captures externally and won't trigger detection.
+
+### Android (Physical Device Required, API 35+)
+1. Run the app on a **real Android device** with API 35+
 2. Start the built-in screen recorder
 3. Observe the mask appearing over sensitive widgets
 
-> **Note:** On Android < 35, recording detection is not supported and the masks will not appear.
+The Android Emulator's record button is external and won't trigger detection.

@@ -117,9 +117,29 @@ flutter run
 
 Or open the project root in VS Code and use the "Example App" launch configuration.
 
+## Testing
+
+> **Important:** Recording detection requires a **physical device**. Simulators and emulators do NOT work.
+
+### iOS (Physical Device Required)
+1. Run the app on a real iPhone/iPad
+2. Open **Control Center** (swipe down from top-right corner)
+3. Tap the **Screen Recording** button (red circle)
+4. The mask overlay should appear over sensitive widgets
+
+The iOS Simulator's "Record Screen" button captures the simulator window externally and does NOT trigger `UIScreen.isCaptured`.
+
+### Android (Physical Device Required, API 35+)
+1. Run the app on a real Android device with API 35+
+2. Use the device's built-in screen recorder
+3. The mask overlay should appear over sensitive widgets
+
+The Android Emulator's record button is external to Android and does NOT trigger the recording callback.
+
 ## Important Notes
 
 - **Screenshots cannot be intercepted or modified** - detection happens AFTER capture
+- **Physical devices required** - simulators/emulators cannot test recording detection
 - On unsupported platforms, the plugin gracefully degrades (no errors, no masking)
 - The overlay only appears in the recording, not on the user's screen
 
