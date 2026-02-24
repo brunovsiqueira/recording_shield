@@ -80,7 +80,7 @@ class RecordingShieldIO extends RecordingShieldPlatformInterface {
   void _handleRecordingStateEvent(dynamic event) {
     if (event is Map) {
       final stateString = event['state'] as String?;
-      final state = _parseRecordingState(stateString);
+      final state = ScreenRecordingStateExtension.fromString(stateString);
       final recordingEvent = RecordingShieldEvent(
         state: state,
         timestamp: DateTime.now(),
@@ -106,19 +106,6 @@ class RecordingShieldIO extends RecordingShieldPlatformInterface {
     _printDebug('Screenshot stream error: $error');
   }
 
-  ScreenRecordingState _parseRecordingState(String? state) {
-    switch (state) {
-      case 'recording':
-        return ScreenRecordingState.recording;
-      case 'notRecording':
-        return ScreenRecordingState.notRecording;
-      case 'unsupported':
-        return ScreenRecordingState.unsupported;
-      default:
-        return ScreenRecordingState.unknown;
-    }
-  }
-
   @override
   Future<ScreenRecordingState> checkRecordingState() async {
     if (!isSupportedPlatform()) {
@@ -127,7 +114,7 @@ class RecordingShieldIO extends RecordingShieldPlatformInterface {
 
     try {
       final result = await _methodChannel.invokeMethod<String>('checkRecordingState');
-      return _parseRecordingState(result);
+      return ScreenRecordingStateExtension.fromString(result);
     } on PlatformException catch (e) {
       _printDebug('Check recording state failed: $e');
       return ScreenRecordingState.unknown;

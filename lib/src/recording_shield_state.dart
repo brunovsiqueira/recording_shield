@@ -15,6 +15,23 @@ enum ScreenRecordingState {
   unsupported,
 }
 
+/// Extension to parse [ScreenRecordingState] from a string.
+extension ScreenRecordingStateExtension on ScreenRecordingState {
+  /// Parses a string value to [ScreenRecordingState].
+  static ScreenRecordingState fromString(String? value) {
+    switch (value) {
+      case 'recording':
+        return ScreenRecordingState.recording;
+      case 'notRecording':
+        return ScreenRecordingState.notRecording;
+      case 'unsupported':
+        return ScreenRecordingState.unsupported;
+      default:
+        return ScreenRecordingState.unknown;
+    }
+  }
+}
+
 /// Available mask styles for overlay rendering.
 enum RecordingShieldMaskStyle {
   /// Diagonal stripe pattern.

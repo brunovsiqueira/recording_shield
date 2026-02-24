@@ -46,6 +46,33 @@ void main() {
       expect(ScreenRecordingState.values, contains(ScreenRecordingState.recording));
       expect(ScreenRecordingState.values, contains(ScreenRecordingState.unsupported));
     });
+
+    test('should parse from string correctly', () {
+      expect(
+        ScreenRecordingStateExtension.fromString('recording'),
+        ScreenRecordingState.recording,
+      );
+      expect(
+        ScreenRecordingStateExtension.fromString('notRecording'),
+        ScreenRecordingState.notRecording,
+      );
+      expect(
+        ScreenRecordingStateExtension.fromString('unsupported'),
+        ScreenRecordingState.unsupported,
+      );
+      expect(
+        ScreenRecordingStateExtension.fromString('unknown'),
+        ScreenRecordingState.unknown,
+      );
+      expect(
+        ScreenRecordingStateExtension.fromString(null),
+        ScreenRecordingState.unknown,
+      );
+      expect(
+        ScreenRecordingStateExtension.fromString('invalid'),
+        ScreenRecordingState.unknown,
+      );
+    });
   });
 
   group('RecordingShieldMaskStyle', () {
