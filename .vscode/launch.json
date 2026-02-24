@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Example App",
+      "cwd": "${workspaceFolder}/example",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "Example App (Profile)",
+      "cwd": "${workspaceFolder}/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "Example App (Release)",
+      "cwd": "${workspaceFolder}/example",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
