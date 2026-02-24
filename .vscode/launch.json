@@ -8,6 +8,13 @@
       "type": "dart"
     },
     {
+      "name": "Advanced Example",
+      "cwd": "${workspaceFolder}/example",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/advanced_example.dart"
+    },
+    {
       "name": "Example App (Profile)",
       "cwd": "${workspaceFolder}/example",
       "request": "launch",
