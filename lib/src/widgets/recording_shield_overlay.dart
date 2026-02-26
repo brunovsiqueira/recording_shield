@@ -68,6 +68,12 @@ class _RecordingShieldOverlayState extends State<RecordingShieldOverlay> {
     final isRecording = controller.isRecording;
     final autoShowOverlay = config?.autoShowOverlay ?? true;
 
+    // On iOS with secure mode, we don't show overlays - the content appears
+    // blank in recordings automatically. On Android, we show stripes/blur overlays.
+    final shouldShowOverlay = isRecording &&
+        autoShowOverlay &&
+        !controller.shouldUseSecureMode;
+
     // Directionality is required for Stack since this widget wraps MaterialApp
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -77,8 +83,8 @@ class _RecordingShieldOverlayState extends State<RecordingShieldOverlay> {
           // Main app content
           widget.child,
 
-          // Overlay when recording is detected
-          if (isRecording && autoShowOverlay)
+          // Overlay when recording is detected (Android only, or iOS with secure mode disabled)
+          if (shouldShowOverlay)
             Positioned.fill(
               child: IgnorePointer(
                 child: widget.overlayBuilder != null

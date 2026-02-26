@@ -34,6 +34,30 @@ class RecordingShieldConfig {
   /// Defaults to `false`.
   final bool disableLogging;
 
+  /// Whether to use secure mode on iOS.
+  ///
+  /// When enabled, the app content appears blank in recordings and screenshots
+  /// while remaining visible to the user (uses isSecureTextEntry hack).
+  ///
+  /// When disabled, the stripes/blur overlay approach is used instead,
+  /// which appears on both the user's screen and in recordings.
+  ///
+  /// Defaults to `true`.
+  final bool useSecureModeOnIOS;
+
+  /// Whether to use secure mode on Android.
+  ///
+  /// When enabled, the entire screen appears black in recordings and screenshots
+  /// while remaining visible to the user (uses FLAG_SECURE).
+  ///
+  /// When disabled, the stripes/blur overlay approach is used instead,
+  /// which appears on both the user's screen and in recordings.
+  ///
+  /// Note: FLAG_SECURE affects the entire window, not just specific widgets.
+  ///
+  /// Defaults to `true`.
+  final bool useSecureModeOnAndroid;
+
   const RecordingShieldConfig({
     this.autoShowOverlay = true,
     this.defaultMaskStyle = RecordingShieldMaskStyle.stripes,
@@ -42,6 +66,8 @@ class RecordingShieldConfig {
     this.detectScreenshots = false,
     this.checkOnLaunch = true,
     this.disableLogging = false,
+    this.useSecureModeOnIOS = true,
+    this.useSecureModeOnAndroid = true,
   });
 
   /// Converts the config to a map for platform channel communication.

@@ -44,6 +44,20 @@ abstract class RecordingShieldPlatformInterface extends PlatformInterface {
     throw UnimplementedError('screenshotStream has not been implemented.');
   }
 
+  /// Enable secure mode (iOS only).
+  /// When enabled, the entire app appears blank in recordings/screenshots.
+  Future<void> enableSecureMode() {
+    throw UnimplementedError('enableSecureMode() has not been implemented.');
+  }
+
+  /// Disable secure mode (iOS only).
+  Future<void> disableSecureMode() {
+    throw UnimplementedError('disableSecureMode() has not been implemented.');
+  }
+
+  /// Whether secure mode is supported on this platform.
+  bool get isSecureModeSupported => false;
+
   /// Dispose the plugin and clean up resources.
   Future<void> dispose() {
     throw UnimplementedError('dispose() has not been implemented.');
