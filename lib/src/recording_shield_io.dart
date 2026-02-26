@@ -139,6 +139,45 @@ class RecordingShieldIO extends RecordingShieldPlatformInterface {
   }
 
   @override
+  bool get isSecureModeSupported {
+    try {
+      // Secure mode is supported on both iOS and Android
+      return Platform.isIOS || Platform.isAndroid;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  @override
+  Future<void> enableSecureMode() async {
+    if (!isSecureModeSupported) {
+      _printDebug('Secure mode not supported on this platform');
+      return;
+    }
+
+    try {
+      await _methodChannel.invokeMethod('enableSecureMode');
+      _printDebug('Secure mode enabled');
+    } on PlatformException catch (e) {
+      _printDebug('Enable secure mode failed: $e');
+    }
+  }
+
+  @override
+  Future<void> disableSecureMode() async {
+    if (!isSecureModeSupported) {
+      return;
+    }
+
+    try {
+      await _methodChannel.invokeMethod('disableSecureMode');
+      _printDebug('Secure mode disabled');
+    } on PlatformException catch (e) {
+      _printDebug('Disable secure mode failed: $e');
+    }
+  }
+
+  @override
   Future<void> dispose() async {
     if (!isSupportedPlatform()) {
       return;

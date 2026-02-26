@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -52,6 +53,16 @@ class RecordingShieldController {
   /// Whether the controller has been initialized.
   bool get isInitialized => _isInitialized;
 
+  /// Whether secure mode is currently enabled.
+  bool _isSecureModeEnabled = false;
+
+  /// Whether secure mode is currently enabled.
+  bool get isSecureModeEnabled => _isSecureModeEnabled;
+
+  /// Whether secure mode is supported on this platform.
+  bool get isSecureModeSupported =>
+      RecordingShieldPlatformInterface.instance.isSecureModeSupported;
+
   /// Stream of recording state change events.
   Stream<RecordingShieldEvent> get recordingStateStream =>
       _recordingEventController.stream;
@@ -100,6 +111,21 @@ class RecordingShieldController {
     recordingState.value = event.state;
     _recordingEventController.add(event);
     _printDebug('Recording state: ${event.state}');
+
+    // Auto-enable/disable secure mode on iOS if configured
+    _updateSecureModeForRecordingState(event.state);
+  }
+
+  void _updateSecureModeForRecordingState(ScreenRecordingState state) {
+    if (!shouldUseSecureMode) {
+      return;
+    }
+
+    if (state == ScreenRecordingState.recording && _maskWidgets.isNotEmpty) {
+      enableSecureMode();
+    } else if (state == ScreenRecordingState.notRecording) {
+      disableSecureMode();
+    }
   }
 
   void _handleScreenshotEvent(ScreenshotEvent event) {
@@ -116,16 +142,78 @@ class RecordingShieldController {
     return state;
   }
 
+  /// Enable secure mode.
+  ///
+  /// When enabled, the app appears blank/black in recordings and screenshots
+  /// while remaining visible to the user.
+  ///
+  /// - **iOS**: Uses the isSecureTextEntry hack
+  /// - **Android**: Uses FLAG_SECURE on the window
+  Future<void> enableSecureMode() async {
+    if (_isSecureModeEnabled) {
+      _printDebug('Secure mode already enabled');
+      return;
+    }
+
+    await RecordingShieldPlatformInterface.instance.enableSecureMode();
+    _isSecureModeEnabled = true;
+    _printDebug('Secure mode enabled');
+  }
+
+  /// Disable secure mode.
+  Future<void> disableSecureMode() async {
+    if (!_isSecureModeEnabled) {
+      _printDebug('Secure mode not enabled');
+      return;
+    }
+
+    await RecordingShieldPlatformInterface.instance.disableSecureMode();
+    _isSecureModeEnabled = false;
+    _printDebug('Secure mode disabled');
+  }
+
   /// Register a mask widget with its global key and style.
   void registerMaskWidget(GlobalKey key, RecordingShieldMaskStyle style) {
     _maskWidgets[key] = style;
     _printDebug('Registered mask widget: ${key.hashCode}');
+
+    // If recording is active and this is the first mask widget, enable secure mode
+    if (isRecording) {
+      _updateSecureModeForRecordingState(recordingState.value);
+    }
   }
 
   /// Unregister a mask widget.
   void unregisterMaskWidget(GlobalKey key) {
     _maskWidgets.remove(key);
     _printDebug('Unregistered mask widget: ${key.hashCode}');
+
+    // If no more mask widgets and secure mode is enabled, disable it
+    if (_maskWidgets.isEmpty && _isSecureModeEnabled) {
+      disableSecureMode();
+    }
+  }
+
+  /// Whether to use secure mode or overlay mode for protection.
+  ///
+  /// Returns true if secure mode is enabled for the current platform
+  /// and the platform supports it.
+  bool get shouldUseSecureMode {
+    if (!isSecureModeSupported) {
+      return false;
+    }
+
+    try {
+      if (Platform.isIOS) {
+        return _config?.useSecureModeOnIOS ?? true;
+      } else if (Platform.isAndroid) {
+        return _config?.useSecureModeOnAndroid ?? true;
+      }
+    } catch (_) {
+      // Platform not available (e.g., web)
+    }
+
+    return false;
   }
 
   /// Get all registered mask widgets with their current rects.
