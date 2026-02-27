@@ -1,0 +1,27 @@
+appId: com.brunovsiqueira.recording_shield_example
+name: Toggle Protection Test
+---
+# Test toggling protection on and off
+
+- launchApp
+
+# Initial state - protection should be ON
+- assertVisible: "Protection is ON"
+- assertVisible: "Disable Protection"
+
+# Disable protection
+- tapOn: "Disable Protection"
+
+# Verify protection is now OFF
+- assertVisible: "Protection is OFF"
+- assertVisible: "Enable Protection"
+
+# Sensitive data should still be visible (just not protected)
+- assertVisible: "4444 5555 6666 7777"
+
+# Enable protection again
+- tapOn: "Enable Protection"
+
+# Verify protection is back ON
+- assertVisible: "Protection is ON"
+- assertVisible: "Disable Protection"

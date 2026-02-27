@@ -1,0 +1,18 @@
+appId: com.brunovsiqueira.recording_shield_example
+name: Scroll and View Info Section
+---
+# Test scrolling to view the info section
+
+- launchApp
+
+# Verify header is visible
+- assertVisible: "Recording Shield Demo"
+
+# Scroll down to see info section
+- scrollUntilVisible:
+    element: "How it works"
+    direction: DOWN
+    timeout: 5000
+
+# Verify info section content is visible
+- assertVisible: "How it works"

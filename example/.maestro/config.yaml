@@ -1,0 +1,18 @@
+# Maestro configuration for Recording Shield Example App
+
+# Flow execution settings
+flows:
+  - app-launch.yaml
+  - toggle-protection.yaml
+  - scroll-info-section.yaml
+
+# Test settings
+executionOrder:
+  continueOnFailure: false
+
+# App configuration
+appId: com.brunovsiqueira.recording_shield_example
+
+# Environment settings
+env:
+  MAESTRO_DRIVER_STARTUP_TIMEOUT: 120000

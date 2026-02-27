@@ -1,0 +1,28 @@
+appId: com.brunovsiqueira.recording_shield_example
+name: App Launch Test
+---
+# Test that the app launches correctly with protection enabled by default
+
+- launchApp
+
+# Verify the header is visible
+- assertVisible: "Recording Shield Demo"
+- assertVisible: "Secure Mode"
+
+# Verify status indicators
+- assertVisible: "Recording"
+- assertVisible: "Screenshots: 0"
+
+# Verify protection is ON by default
+- assertVisible: "Protection is ON"
+
+# Verify sensitive data card is visible
+- assertVisible: "SENSITIVE DATA"
+- assertVisible: "4444 5555 6666 7777"
+- assertVisible: "John Doe"
+
+# Verify toggle button shows correct state
+- assertVisible: "Disable Protection"
+
+# Verify info section
+- assertVisible: "How it works"
